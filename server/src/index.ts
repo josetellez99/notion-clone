@@ -12,9 +12,6 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-console.log(typeof process.env.DB_PASSWORD)
-console.log(process.env.DB_PASSWORD)
-
 // PostgreSQL connection
 const pool = new Pool({
     user: process.env.DB_USER,
