@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { body, validationResult } from "express-validator";
@@ -14,10 +14,11 @@ router.post(
         body("email").isEmail(),
         body("password").isLength({ min: 6 }),
     ],
-    async (req, res) => {
+    async (req: Request, res: Response): Promise<void> => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            res.status(400).json({ errors: errors.array() });
+            return;
         }
 
         const { username, email, password } = req.body;
@@ -26,7 +27,8 @@ router.post(
             // Check if the user already exists
             const userExists = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
             if (userExists.rows.length > 0) {
-                return res.status(400).json({ message: "User already exists" });
+                res.status(400).json({ message: "User already exists" });
+                return;
             }
 
             // Hash the password
@@ -51,10 +53,11 @@ router.post(
 router.post(
     "/login",
     [body("email").isEmail(), body("password").notEmpty()],
-    async (req, res) => {
+    async (req: Request, res: Response): Promise<void> => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            res.status(400).json({ errors: errors.array() });
+            return;
         }
 
         const { email, password } = req.body;
@@ -63,13 +66,15 @@ router.post(
             // Find user
             const user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
             if (user.rows.length === 0) {
-                return res.status(400).json({ message: "Invalid credentials" });
+                res.status(400).json({ message: "Invalid credentials" });
+                return;
             }
 
             // Compare passwords
             const isMatch = await bcrypt.compare(password, user.rows[0].password);
             if (!isMatch) {
-                return res.status(400).json({ message: "Invalid credentials" });
+                res.status(400).json({ message: "Invalid credentials" });
+                return;
             }
 
             // Generate JWT token
