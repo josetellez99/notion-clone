@@ -3,7 +3,7 @@ import { Pool } from 'pg';
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import authRoutes from "@/routes/auth.routes";
+import router from "@/routes/auth.routes";
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use("/auth", authRoutes); // Use the authentication routes
+app.use("/auth", router);
 
 // PostgreSQL connection
 export const pool = new Pool({
