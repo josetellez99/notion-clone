@@ -31,7 +31,9 @@ pool.connect()
 
 // Test route
 app.get('/', (req, res) => {
-    res.send('Server is running!');
+    res.send({
+        name: 'Jose'
+    });
 });
 
 // Start server
