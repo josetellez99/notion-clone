@@ -1,9 +1,9 @@
 import 'module-alias/register';
-import { Pool } from 'pg';
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import router from "@/routes/auth.routes";
+import { pool } from "@/db/pool"
 
 dotenv.config();
 
@@ -14,15 +14,6 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use("/auth", router);
-
-// PostgreSQL connection
-export const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: Number(process.env.DB_PORT),
-});
 
 // Test database connection
 pool.connect()
