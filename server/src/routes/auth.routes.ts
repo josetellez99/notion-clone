@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { body, validationResult } from "express-validator";
 import { pool } from "@/db/pool";
+import { createUser } from "@/db/repositories/users";
 
 const router = express.Router();
 
@@ -36,10 +37,7 @@ router.post(
             const hashedPassword = await bcrypt.hash(password, salt);
 
             // Insert new user
-            const newUser = await pool.query(
-                "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
-                [username, email, hashedPassword]
-            );
+            const newUser = await createUser({username, email, hashedPassword})
 
             res.json({ message: "User registered successfully", user: newUser.rows[0] });
         } catch (error) {
