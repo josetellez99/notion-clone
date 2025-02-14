@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 import { createUser, getUserByEmail } from "@/db/repositories/users";
 
