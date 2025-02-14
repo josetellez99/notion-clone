@@ -1,7 +1,7 @@
 CREATE TABLE pages (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    creation_date TIMESTAMP DEFAULT NOW(),
+    creation_at TIMESTAMP DEFAULT NOW(),
     last_modified TIMESTAMP DEFAULT NOW(),
     icon VARCHAR(255),
     cover_image VARCHAR(255),
@@ -22,3 +22,4 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
+SELECT * FROM pages

@@ -17,7 +17,7 @@ export const USER_COLUMNS = {
 export const PAGES_COLUMNS = {
     ID: 'id',
     NAME: 'name',
-    CREATION_AT: 'creation_at',
+    CREATED_AT: 'creation_at',
     LAST_MODIFIED: 'last_modified',
     ICON: 'icon',
     COVER_IMAGE: 'cover_image',
