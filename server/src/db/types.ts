@@ -10,7 +10,7 @@ export interface user {
     updated_at: string;
 }
 
-export interface page {
+export interface Page {
     id: number;
     name: string;
     created_at: string;
