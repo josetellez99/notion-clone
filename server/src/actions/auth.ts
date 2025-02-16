@@ -3,10 +3,10 @@ import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv';
+import { createUser, getUserByEmail } from "@/db/repositories/users";
 
 dotenv.config();
 
-import { createUser, getUserByEmail } from "@/db/repositories/users";
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
 
