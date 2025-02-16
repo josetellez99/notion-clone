@@ -22,4 +22,4 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
-SELECT * FROM pages
+SELECT * FROM users
