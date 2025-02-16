@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv';
-import { createUser, getUserByEmail } from "@/db/repositories/users";
+import { createUser, fetchUserByEmail } from "@/db/repositories/users";
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
 
     try {
         // Check if the user already exists
-        const userExists = await getUserByEmail(email)
+        const userExists = await fetchUserByEmail(email)
         if (userExists.rows.length > 0) {
             res.status(400).json({ message: "User already exists" });
             return;
@@ -52,7 +52,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
     try {
         // Check if user exists
-        const userExists = await getUserByEmail(email)
+        const userExists = await fetchUserByEmail(email)
         if (userExists.rows.length === 0) {
             res.status(401).json({ message: "Invalid credentials" });
             return;

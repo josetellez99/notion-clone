@@ -15,6 +15,6 @@ export const createUser = async ({username, email, hashedPassword} : createUserP
     );
 }
 
-export const getUserByEmail = async (email : string) => {
+export const fetchUserByEmail = async (email : string) => {
     return await pool.query(`SELECT * FROM ${TABLES.USERS} WHERE ${USER_COLUMNS.EMAIL} = $1`, [email]);
 }

@@ -7,8 +7,6 @@ interface AuthRequest extends Request {
 
 export const authenticateJWT = (req: AuthRequest, res: Response, next: NextFunction) => {
 
-    console.log('authentication middleware')
-
     const token = req.header("Authorization")?.split(" ")[1];
 
     if (!token) {
