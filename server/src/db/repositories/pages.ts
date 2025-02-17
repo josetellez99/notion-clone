@@ -13,9 +13,3 @@ export const createPageDB = async (newPage: Partial<Page>) => {
         VALUES ($1, $2, $3)`,
         [newPage.name, newPage.user_id, newPage.parent_page_id])
 }
-
-export const updatePageDB = async (newPage: Partial<Page>) => {
-    return await pool.query(`
-        UPDATE ${TABLES.PAGES} SET 
-        `)
-}
