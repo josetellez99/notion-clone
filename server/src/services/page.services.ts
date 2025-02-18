@@ -13,10 +13,10 @@ export const createPage = async (data: Partial<Page>) => {
 
 export const updatePage = async (pageId: string, data: Partial<Page>) => {
     const res = await updatePageDB(pageId, data)
-    return res
+    return res?.rows[0]
 }
 
 export const deletePage = async (pageId: string) => {
     const res = await deletePageDb(pageId)
-    return res
+    return res?.rows[0]
 }

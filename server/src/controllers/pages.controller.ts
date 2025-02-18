@@ -27,10 +27,11 @@ export const createPageAction = async (req: Request, res: Response): Promise<voi
 
 export const updatePageAction = async (req: Request, res: Response): Promise<void> => {
     
-    const {pageId, ...newPage} = req.body
+    const { ...newPage } = req.body
+    const id = req.params.id
 
     try {
-        const pageRes = await updatePage(pageId, newPage)
+        const pageRes = await updatePage(id, newPage)
         res.json({pageRes})
     } catch {
         res.status(500).json({ message: "Server error" });
@@ -39,10 +40,10 @@ export const updatePageAction = async (req: Request, res: Response): Promise<voi
 
 export const deletePageAction = async (req: Request, res: Response): Promise<void> => {
     
-    const { pageId } = req.body
+    const id = req.params.id
 
     try {
-        const pageRes = await deletePage(pageId)
+        const pageRes = await deletePage(id)
         res.json({pageRes})
     } catch {
         res.status(500).json({ message: "Server error" });
