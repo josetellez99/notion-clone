@@ -2,7 +2,7 @@ import 'module-alias/register';
 import express from 'express';
 import cors from 'cors';
 import router from "@/routes/auth.routes";
-import {router as pagesRouter} from '@/routes/pages';
+import {router as pagesRouter} from '@/routes/pages.routes';
 import { pool } from "@/db/pool"
 
 const app = express();
