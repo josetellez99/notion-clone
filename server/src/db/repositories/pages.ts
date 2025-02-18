@@ -13,3 +13,10 @@ export const createPageDB = async (newPage: Partial<Page>) => {
         VALUES ($1, $2, $3)`,
         [newPage.name, newPage.user_id, newPage.parent_page_id])
 }
+
+export const deletePageDb = async (pageId: string) => {
+    return await pool.query(`
+        "DELETE FROM ${TABLES.PAGES} 
+        WHERE ${PAGES_COLUMNS.ID} = $1 RETURNING *",
+        `, [pageId])
+}
