@@ -3,7 +3,28 @@ import { Page } from "@/db/types";
 
 export const getAllUserPages = async (userId: string) => {
     const res = await fetchUserPages(userId)
-    return res.rows
+    const pages = res.rows
+
+    const pagesMap = new Map()
+
+    pages.forEach((page) => {
+        pagesMap.set(page.id, {...page, children: []})
+    })
+
+    const parentPages: Page[] = []
+
+    pages.forEach((page) => {
+        if(page.parent_page_id) {
+            const parentPage = pagesMap.get(page.parent_page_id)
+            if(parentPage) {
+                parentPage.children.push(pagesMap.get(page.id))
+            }
+        } else {
+            parentPages.push(pagesMap.get(page.id))
+        }
+    })
+
+    return parentPages
 }
 
 export const createPage = async (data: Partial<Page>) => {
