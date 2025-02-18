@@ -10,7 +10,8 @@ export const createPageDB = async (newPage: Partial<Page>) => {
     return await pool.query(`
         INSERT INTO ${TABLES.PAGES} 
         (${PAGES_COLUMNS.NAME}, ${PAGES_COLUMNS.USER_ID}, ${PAGES_COLUMNS.PARENT_PAGE_ID})
-        VALUES ($1, $2, $3)`,
+        VALUES ($1, $2, $3)
+        RETURNING *`,
         [newPage.name, newPage.user_id, newPage.parent_page_id])
 }
 

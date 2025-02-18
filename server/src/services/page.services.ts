@@ -8,7 +8,7 @@ export const getAllUserPages = async (userId: string) => {
 
 export const createPage = async (data: Partial<Page>) => {
     const res = await createPageDB(data)
-    return res.rows
+    return res.rows[0]
 }
 
 export const updatePage = async (pageId: string, data: Partial<Page>) => {
