@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createPage, getAllUserPages } from "@/services/page.services";
+import { createPage, getAllUserPages, updatePage } from "@/services/page.services";
 
 export const getAllUserPagesAction = async (req: Request, res: Response): Promise<void> => {
 
@@ -19,6 +19,18 @@ export const createPageAction = async (req: Request, res: Response): Promise<voi
 
     try {
         const pageRes = await createPage(newPage)
+        res.json({pageRes})
+    } catch {
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+export const updatePageAction = async (req: Request, res: Response): Promise<void> => {
+    
+    const {pageId, ...newPage} = req.body
+
+    try {
+        const pageRes = await updatePage(pageId, newPage)
         res.json({pageRes})
     } catch {
         res.status(500).json({ message: "Server error" });
