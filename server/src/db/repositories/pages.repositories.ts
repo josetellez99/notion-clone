@@ -56,3 +56,22 @@ export const updatePageDB = async (pageId: string, updates: Partial<Page>) => {
 
     return pool.query(query, values);
 };
+
+export const checkCircularReferenceDB = async (pageId: string, newParentId: number | undefined) => {
+
+    if(!newParentId) return false
+
+    const query = `
+        WITH RECURSIVE page_ancestors AS (
+            SELECT ${PAGES_COLUMNS.ID}, ${PAGES_COLUMNS.PARENT_PAGE_ID} FROM ${TABLES.PAGES} WHERE id = $1
+            UNION ALL
+            SELECT p.id, p.parent_page_id FROM ${TABLES.PAGES} p
+            INNER JOIN page_ancestors pa ON p.parent_page_id = pa.id
+        )
+        SELECT 1 FROM page_ancestors WHERE id = $2;
+    `;
+
+    const result = await pool.query(query, [pageId, newParentId]);
+
+    return (result.rowCount ?? 0) > 0;
+};
