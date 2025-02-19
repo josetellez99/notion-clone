@@ -5,6 +5,7 @@ export const getAllUserPages = async (userId: string) => {
     const res = await fetchUserPages(userId)
     const pages = res.rows
 
+    // create the structure hierarchical JSON for nested pages
     const pagesMap = new Map()
 
     pages.forEach((page) => {
@@ -36,10 +37,10 @@ export const createPage = async (data: Partial<Page>) => {
         throw new Error("Failed to create page.");
     }
 
-    // Step 2: Check for circular reference using the new ID
+    // Check for circular reference using the new ID
     const hasCircularReference = await checkCircularReferenceDB(newPage.id, newPage.parent_page_id);
 
-    // Step 3: If circular reference detected, delete the inserted page
+    // If circular reference detected, delete the inserted page
     if (hasCircularReference) {
         await deletePageDb(newPage.id);
         throw new Error("Circular reference detected. Page creation rolled back.");
