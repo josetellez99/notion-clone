@@ -6,7 +6,7 @@ export const SidebarLayout = () => {
     return (
         <div className={styles.container}>
             <Sidebar />
-            <main>
+            <main className={styles.page_container}>
                 <Outlet />
             </main>
         </div>
