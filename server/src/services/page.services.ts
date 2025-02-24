@@ -1,5 +1,5 @@
 import { createPageDB, deletePageDb, fetchUserPages, updatePageDB, checkCircularReferenceDB } from "@/db/repositories/pages.repositories";
-import { Page } from "@shared/types";
+import { Page } from '@/types/pages';
 
 export const getAllUserPages = async (userId: string) => {
     const res = await fetchUserPages(userId)

@@ -1,5 +1,5 @@
-import { Page } from "@shared/types";
-import { useState, useEffect, createContext, ReactNode } from "react";
+import { Page } from "@/types/pages";
+import { useState, createContext, ReactNode } from "react";
 import { fetchPages } from "@/api/pagesApi";
 
 interface PageContextProps {
@@ -8,7 +8,7 @@ interface PageContextProps {
     addPage: (new_page: Partial<Page>) => void;
     deletePage: (id: string) => void;
     updatePage: (id: string, updatePage: Partial<Page>) => void;
-    getPages: (user_id: string) => void
+    getPages: (user_id: number) => void
 }
 
 export const PageContext = createContext<PageContextProps | null>(null)
@@ -39,15 +39,16 @@ export const PagesProvider = ({children} : PagesProviderProps) => {
     }
 
     const addPage = async (newPage: Partial<Page>) => {
+        console.log(newPage)
 
     }
 
     const deletePage = async (pageId: string) => {
-
+        console.log(pageId)
     }
 
     const updatePage = async (newPage: Partial<Page>) => {
-
+        console.log(newPage)
     }
 
 

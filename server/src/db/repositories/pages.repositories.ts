@@ -1,5 +1,5 @@
 import { pool } from '@/db/pool'
-import { Page } from '@/db/types';
+import { Page } from '@/types/pages';
 import { TABLES, PAGES_COLUMNS } from '@/db/constants'
 
 export const fetchUserPages = async (userId: string) => {
