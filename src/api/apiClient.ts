@@ -11,6 +11,7 @@ export const apiClient = async <T>(
         method,
         headers: {
             "Content-Type": "application/json",
+            ...headers
         },
         body: body ? JSON.stringify(body) : undefined,
     });
