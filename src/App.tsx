@@ -1,8 +1,11 @@
 import { AppRouter } from "@/routes/appRouter";
+import { PagesProvider } from "./contexts/PageContext";
 
 function App() {
   return (
-    <AppRouter />
+    <PagesProvider>
+      <AppRouter />
+    </PagesProvider>
   );
 }
 
