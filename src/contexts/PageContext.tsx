@@ -2,7 +2,11 @@ import { Page } from "@shared/types";
 import { useState, useEffect, createContext, ReactNode } from "react";
 
 interface PageContextProps {
-    pages: Page[]
+    pages: Partial<Page>[];
+    addPage: (new_page: Partial<Page>) => void;
+    deletePage: (id: string) => void;
+    updatePage: (id: string, updatePage: Partial<Page>) => void;
+    getPages: (user_id: string) => void
 }
 
 export const PageContext = createContext<PageContextProps | null>(null)
