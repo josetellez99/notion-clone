@@ -1,4 +1,4 @@
-import { createPageDB, deletePageDb, fetchUserPages, updatePageDB, checkCircularReferenceDB } from "@/db/repositories/pages.repositories";
+import { createPageDB, deletePageDb, fetchUserPages, updatePageDB, checkCircularReferenceDB, fetchPage } from "@/db/repositories/pages.repositories";
 import { Page } from '@/types/pages';
 
 export const getAllUserPages = async (userId: string) => {
@@ -26,6 +26,11 @@ export const getAllUserPages = async (userId: string) => {
     })
 
     return parentPages
+}
+
+export const getPage = async (page_id: string) => {
+    const res = await fetchPage(page_id)
+    return res?.rows[0]
 }
 
 export const createPage = async (data: Partial<Page>) => {

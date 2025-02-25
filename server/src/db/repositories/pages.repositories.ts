@@ -6,6 +6,13 @@ export const fetchUserPages = async (userId: string) => {
     return await pool.query(`SELECT * FROM ${TABLES.PAGES} WHERE ${PAGES_COLUMNS.USER_ID} = $1`, [userId]);
 }
 
+export const fetchPage = async (page_id: string) => {
+    return await pool.query(`
+        SELECT * FROM ${TABLES.PAGES}
+        WHERE ${PAGES_COLUMNS.ID}
+        = $1`, [page_id])
+}
+
 export const createPageDB = async (newPage: Partial<Page>) => {
     return await pool.query(`
         INSERT INTO ${TABLES.PAGES} 
