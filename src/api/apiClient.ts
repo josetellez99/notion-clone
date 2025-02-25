@@ -1,22 +1,21 @@
-import { BASE_API_URL } from "@/utils/constants";
-
 export const apiClient = async <T>(
-    endpoint: string,
-    method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
-    headers?: object,
+    url: string,
+    method: string = "GET",
+    headers: Record<string, string> = {},
     body?: object
 ): Promise<T> => {
-
-    const res = await fetch(`${BASE_API_URL}${endpoint}`, {
+    const options: RequestInit = {
         method,
-        headers: {
-            "Content-Type": "application/json",
-            ...headers
-        },
-        body: body ? JSON.stringify(body) : undefined,
-    });
+        headers: { "Content-Type": "application/json", ...headers },
+    };
 
-    if (!res.ok) throw new Error(`Failed to fetch: ${res.statusText}`);
+    if (body && method !== "GET") {
+        options.body = JSON.stringify(body);
+    }
 
-    return res.json();
+    const response = await fetch(url, options);
+    if (!response.ok) throw new Error("Network response was not ok");
+
+    return response.json();
 };
+

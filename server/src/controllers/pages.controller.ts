@@ -3,7 +3,8 @@ import { createPage, getAllUserPages, updatePage, deletePage } from "@/services/
 
 export const getAllUserPagesAction = async (req: Request, res: Response): Promise<void> => {
 
-    const { userId } = req.body;
+    const { userId } = req.params;
+    console.log('userId', userId)
 
     try {
         const pagesRes = await getAllUserPages(userId)

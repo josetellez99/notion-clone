@@ -4,9 +4,12 @@ import cors from 'cors';
 import AuthRouter from "@/routes/auth.routes";
 import pagesRouter from '@/routes/pages.routes';
 import { pool } from "@/db/pool"
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT
 
 // Middleware
 app.use(cors());

@@ -4,7 +4,7 @@ import { getAllUserPagesAction, createPageAction, updatePageAction, deletePageAc
 
 const router = express.Router();
 
-router.get("/", authenticateJWT, getAllUserPagesAction);
+router.get("/:userId", authenticateJWT, getAllUserPagesAction);
 router.post('/', authenticateJWT, createPageAction)
 router.put("/:id", authenticateJWT, updatePageAction)
 router.delete("/:id", authenticateJWT, deletePageAction)

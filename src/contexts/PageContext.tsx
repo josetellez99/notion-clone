@@ -24,16 +24,11 @@ export const PagesProvider = ({children} : PagesProviderProps) => {
 
     const getPages = async (userId: number) => {
 
-        const body = {
-            userId
-        }
-
         try {
             setLoading(true)
-            const pages = await fetchPages(body)
+            const pages = await fetchPages(userId)
             setPages(pages)
-        } catch (error) {
-            console.log(error)
+        } catch {
             setLoading(false)
         }
     }
