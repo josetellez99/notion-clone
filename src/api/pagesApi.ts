@@ -7,3 +7,8 @@ export const fetchPages = async (userId: number) => {
     const url = `${BASE_API_URL}/${API_ENDPOINTS.PAGES}/${userId}`
     return apiClient<{pages: Page[]}>(url, 'GET')
 }
+
+export const fetchPage = async (page_id: number) => {
+    const url = `${BASE_API_URL}/${API_ENDPOINTS.PAGE}/${page_id}`
+    return apiClient(url, 'GET')
+}

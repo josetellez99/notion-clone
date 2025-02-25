@@ -1,17 +1,19 @@
 import { Page } from "@/types/pages";
 import { useState, createContext, ReactNode } from "react";
-import { fetchPages } from "@/api/pagesApi";
+import { fetchPages, fetchPage } from "@/api/pagesApi";
 
 interface PageContextProps {
     pages: Partial<Page>[];
     loadingPages: boolean;
+    loadingSinglePage: boolean;
     loadingAdd: boolean;
     loadingDelete: boolean;
     loadingUpdate: boolean;
     addPage: (new_page: Partial<Page>) => void;
     deletePage: (id: string) => void;
     updatePage: (id: string, updatePage: Partial<Page>) => void;
-    getPages: (user_id: number) => void
+    getPages: (user_id: number) => void;
+    getSinglePage: (page_id: number) => Page
 }
 
 export const PageContext = createContext<PageContextProps | null>(null)
@@ -24,6 +26,7 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
 
     const [pages, setPages] = useState<Page[] | null>(null)
     const [loadingPages, setLoadingPages] = useState(false);
+    const [loadingSinglePage, setLoadingSinglePage] = useState(false)
     const [loadingAdd, setLoadingAdd] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [loadingUpdate, setLoadingUpdate] = useState(false);
@@ -40,6 +43,18 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
             console.log('error')
         } finally{
             setLoadingPages(false)
+        }
+    }
+
+    const getSinglePage = async (pageId: number): Page => {
+        try {
+            setLoadingSinglePage(true)
+            const res = await fetchPage(pageId)
+            return res.page
+        } catch {
+            console.log('error')
+        } finally {
+            setLoadingSinglePage(false)
         }
     }
 
@@ -80,10 +95,12 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
     const data = {
         pages,
         loadingPages,
+        loadingSinglePage,
         loadingAdd,
         loadingDelete,
         loadingUpdate,
         getPages,
+        getSinglePage,
         addPage,
         deletePage,
         updatePage
