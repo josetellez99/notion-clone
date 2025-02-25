@@ -5,5 +5,5 @@ import { BASE_API_URL } from "@/utils/constants";
 
 export const fetchPages = async (userId: number) => {
     const url = `${BASE_API_URL}/${API_ENDPOINTS.PAGES}/${userId}`
-    return apiClient<Page[]>(url, 'GET')
+    return apiClient<{pages: Page[]}>(url, 'GET')
 }
