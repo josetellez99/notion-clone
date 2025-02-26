@@ -13,7 +13,7 @@ interface PageContextProps {
     deletePage: (id: string) => void;
     updatePage: (id: string, updatePage: Partial<Page>) => void;
     getPages: (user_id: number) => void;
-    getSinglePage: (page_id: number) => Page
+    getSinglePage: (page_id: number) => Promise<Page | undefined>
 }
 
 export const PageContext = createContext<PageContextProps | null>(null)
@@ -31,14 +31,12 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [loadingUpdate, setLoadingUpdate] = useState(false);
 
-    console.log(pages)
-
     const getPages = async (userId: number) => {
 
         try {
             setLoadingPages(true)
             const res = await fetchPages(userId)
-            setPages(res.pages)
+            setPages(res)
         } catch {
             console.log('error')
         } finally{
@@ -46,13 +44,12 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         }
     }
 
-    const getSinglePage = async (pageId: number): Page => {
+    const getSinglePage = async (pageId: number): Promise<Page | undefined> => {
         try {
             setLoadingSinglePage(true)
-            const res = await fetchPage(pageId)
-            return res.page
-        } catch {
-            console.log('error')
+            return await fetchPage(pageId)
+        } catch (error) {
+            console.log(error)
         } finally {
             setLoadingSinglePage(false)
         }

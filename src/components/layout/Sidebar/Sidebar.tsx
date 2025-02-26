@@ -4,11 +4,19 @@ import { useEffect } from 'react'
 
 export const Sidebar = () => {
 
-    const { getPages, pages, loadingPages } = usePages()
+    const { getPages, pages, loadingPages, getSinglePage } = usePages()
 
     useEffect(() => {
-        getPages(1)
+        const init = async () => {
+            await getPages(1)
+            const page = await getSinglePage(5)
+            console.log(page)
+        }
+        init()
+
     }, [])
+
+    console.log(pages)
 
     return (
         <aside className={styles.sidebar}>

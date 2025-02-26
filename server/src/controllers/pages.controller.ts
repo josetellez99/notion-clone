@@ -7,7 +7,7 @@ export const getAllUserPagesAction = async (req: Request, res: Response): Promis
 
     try {
         const pagesRes = await getAllUserPages(userId)
-        res.json({ pagesRes });
+        res.json([...pagesRes] );
     } catch {
         res.status(500).json({ message: "Server error" });
     }
@@ -19,7 +19,7 @@ export const getPageByIdAction = async (req: Request, res: Response): Promise<vo
 
     try {
         const pagesRes = await getPage(pageId)
-        res.json({ pagesRes });
+        res.json({ ...pagesRes });
     } catch {
         res.status(500).json({ message: "Server error" });
     }
@@ -31,7 +31,7 @@ export const createPageAction = async (req: Request, res: Response): Promise<voi
 
     try {
         const pageRes = await createPage(newPage)
-        res.json({pageRes})
+        res.json({...pageRes})
     } catch {
         res.status(500).json({ message: "Server error" });
     }
@@ -44,7 +44,7 @@ export const updatePageAction = async (req: Request, res: Response): Promise<voi
 
     try {
         const pageRes = await updatePage(id, newPage)
-        res.json({pageRes})
+        res.json({...pageRes})
     } catch {
         res.status(500).json({ message: "Server error" });
     }
@@ -56,7 +56,7 @@ export const deletePageAction = async (req: Request, res: Response): Promise<voi
 
     try {
         const pageRes = await deletePage(id)
-        res.json({pageRes})
+        res.json({...pageRes})
     } catch {
         res.status(500).json({ message: "Server error" });
     }

@@ -21,7 +21,5 @@ export const authenticateJWT = (req: AuthRequest, res: Response, next: NextFunct
     // } catch (err) {
     //     res.status(403).json({ message: "Invalid token" + err });
     // }
-
-    console.log(req, res)
     next()
 };

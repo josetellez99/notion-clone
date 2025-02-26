@@ -1,6 +1,6 @@
 import express from "express";
 import { authenticateJWT } from "@/middlewares/authMiddlewares";
-import { getAllUserPagesAction, createPageAction, updatePageAction, deletePageAction } from "@/controllers/pages.controller";
+import { getAllUserPagesAction, createPageAction, updatePageAction, deletePageAction, getPageByIdAction } from "@/controllers/pages.controller";
 
 const router = express.Router();
 

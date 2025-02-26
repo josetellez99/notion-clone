@@ -30,6 +30,7 @@ export const getAllUserPages = async (userId: string) => {
 
 export const getPage = async (page_id: string) => {
     const res = await fetchPage(page_id)
+    console.log('service layer', res)
     return res?.rows[0]
 }
 
