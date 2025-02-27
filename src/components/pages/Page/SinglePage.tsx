@@ -12,6 +12,7 @@ export const SinglePage = () => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        setLoading(true)
         const init = async () => {
             const res = await getSinglePage(Number(id))
             setPage(res)
@@ -19,6 +20,7 @@ export const SinglePage = () => {
         }
         init()
     }, [id])
+
 
     if(loading) {
         return <p>Cargando...</p>

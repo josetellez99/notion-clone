@@ -12,6 +12,7 @@ export const Sidebar = () => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        setLoading(true)
         const init = async () => {
             await getPages(1)
             setLoading(false)
