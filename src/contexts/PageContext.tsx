@@ -4,11 +4,6 @@ import { fetchPages, fetchPage } from "@/api/pagesApi";
 
 interface PageContextProps {
     pages: Partial<Page>[];
-    loadingPages: boolean;
-    loadingSinglePage: boolean;
-    loadingAdd: boolean;
-    loadingDelete: boolean;
-    loadingUpdate: boolean;
     addPage: (new_page: Partial<Page>) => void;
     deletePage: (id: string) => void;
     updatePage: (id: string, updatePage: Partial<Page>) => void;
@@ -25,77 +20,52 @@ interface PagesProviderProps {
 export const PagesProvider = ({ children }: PagesProviderProps) => {
 
     const [pages, setPages] = useState<Page[] | null>(null)
-    const [loadingPages, setLoadingPages] = useState(false);
-    const [loadingSinglePage, setLoadingSinglePage] = useState(false)
-    const [loadingAdd, setLoadingAdd] = useState(false);
-    const [loadingDelete, setLoadingDelete] = useState(false);
-    const [loadingUpdate, setLoadingUpdate] = useState(false);
 
     const getPages = async (userId: number) => {
 
         try {
-            setLoadingPages(true)
             const res = await fetchPages(userId)
             setPages(res)
         } catch {
             console.log('error')
-        } finally{
-            setLoadingPages(false)
         }
     }
 
     const getSinglePage = async (pageId: number): Promise<Page | undefined> => {
         try {
-            setLoadingSinglePage(true)
             return await fetchPage(pageId)
         } catch (error) {
             console.log(error)
-        } finally {
-            setLoadingSinglePage(false)
-        }
+        } 
     }
 
     const addPage = async (newPage: Partial<Page>) => {
         try {
-            setLoadingAdd(true)
             console.log(newPage)
         } catch {
             console.log('error')
-        } finally {
-            setLoadingAdd(false)
         }
     }
 
     const deletePage = async (pageId: string) => {
         try {
-            setLoadingDelete(true)
             console.log(pageId)
         } catch {
             console.log('error')
-        } finally {
-            setLoadingDelete(false)
         }
     }
 
     const updatePage = async (newPage: Partial<Page>) => {
         try {
-            setLoadingUpdate(true)
             console.log(newPage)
         } catch {
             console.log('error')
-        } finally {
-            setLoadingUpdate(false)
         }
     }
 
 
     const data = {
         pages,
-        loadingPages,
-        loadingSinglePage,
-        loadingAdd,
-        loadingDelete,
-        loadingUpdate,
         getPages,
         getSinglePage,
         addPage,
