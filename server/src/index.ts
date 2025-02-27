@@ -5,6 +5,7 @@ import AuthRouter from "@/routes/auth.routes";
 import pagesRouter from '@/routes/pages.routes';
 import { pool } from "@/db/pool"
 import dotenv from 'dotenv';
+import { errorHandler } from "@/middlewares/errorMiddleware";
 
 dotenv.config();
 
@@ -15,12 +16,14 @@ const PORT = process.env.PORT
 app.use(cors());
 app.use(express.json());
 app.use("/auth", AuthRouter);
-app.use("/pages", pagesRouter)
+app.use("/pages", pagesRouter);
+app.use(errorHandler);
 
 // Test database connection
 pool.connect()
     .then(() => console.log('Connected to PostgreSQL'))
     .catch(err => console.error('Error connecting to PostgreSQL:', err));
+
 
 // Test route
 app.get('/', (req, res) => {

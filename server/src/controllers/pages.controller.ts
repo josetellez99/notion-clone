@@ -1,63 +1,53 @@
-import { Request, Response } from "express";
-import { createPage, getAllUserPages, updatePage, deletePage, getPage } from "@/services/page.services";
+import { Request, Response, NextFunction } from "express";
+import { getAllUserPages, getPage, createPage, updatePage, deletePage } from "@/services/page.services";
 
-export const getAllUserPagesAction = async (req: Request, res: Response): Promise<void> => {
-
-    const { userId } = req.params;
-
+export const getAllUserPagesAction = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const pagesRes = await getAllUserPages(userId)
-        res.json([...pagesRes] );
-    } catch {
-        res.status(500).json({ message: "Server error" });
+        const { userId } = req.params;
+        const pagesRes = await getAllUserPages(userId);
+        res.json([...pagesRes]);
+    } catch (error) {
+        next(error);
     }
-}
+};
 
-export const getPageByIdAction = async (req: Request, res: Response): Promise<void> => {
-
-    const { pageId } = req.params;
-
+export const getPageByIdAction = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const pagesRes = await getPage(pageId)
-        res.json({ ...pagesRes });
-    } catch {
-        res.status(500).json({ message: "Server error" });
+        const { pageId } = req.params;
+        const pageRes = await getPage(pageId);
+        res.json({ ...pageRes });
+    } catch (error) {
+        next(error);
     }
-}
+};
 
-export const createPageAction = async (req: Request, res: Response): Promise<void> => {
-    
-    const {...newPage} = req.body
-
+export const createPageAction = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const pageRes = await createPage(newPage)
-        res.json({...pageRes})
-    } catch {
-        res.status(500).json({ message: "Server error" });
+        const { ...newPage } = req.body;
+        const pageRes = await createPage(newPage);
+        res.json({ ...pageRes });
+    } catch (error) {
+        next(error);
     }
-}
+};
 
-export const updatePageAction = async (req: Request, res: Response): Promise<void> => {
-    
-    const { ...newPage } = req.body
-    const id = req.params.id
-
+export const updatePageAction = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const pageRes = await updatePage(id, newPage)
-        res.json({...pageRes})
-    } catch {
-        res.status(500).json({ message: "Server error" });
+        const { ...newPage } = req.body;
+        const { id } = req.params;
+        const pageRes = await updatePage(id, newPage);
+        res.json({ ...pageRes });
+    } catch (error) {
+        next(error);
     }
-}
+};
 
-export const deletePageAction = async (req: Request, res: Response): Promise<void> => {
-    
-    const id = req.params.id
-
+export const deletePageAction = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const pageRes = await deletePage(id)
-        res.json({...pageRes})
-    } catch {
-        res.status(500).json({ message: "Server error" });
+        const { id } = req.params;
+        const pageRes = await deletePage(id);
+        res.json({ ...pageRes });
+    } catch (error) {
+        next(error);
     }
-}
+};

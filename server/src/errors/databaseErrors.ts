@@ -28,3 +28,10 @@ export class NotFoundError extends DatabaseError {
         this.name = "NotFoundError";
     }
 }
+
+export class CircularReferenceError extends Error {
+    constructor(message = "Circular reference detected") {
+        super(message);
+        this.name = "CircularReferenceError";
+    }
+}
