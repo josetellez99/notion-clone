@@ -3,6 +3,7 @@ import { DashboardPage } from '@/components/pages/Dasboard/Dashboard'
 import { ProtectedRoute } from "@/routes/protectedRoute";
 import { AppPage } from "@/components/pages/AppPage";
 import { SidebarLayout } from "@/components/layout/SidebarLayout/SidebarLayout";
+import { SinglePage } from "@/components/pages/Page/SinglePage";
 
 export const AppRouter = () => {
     return (
@@ -15,6 +16,7 @@ export const AppRouter = () => {
                 <Route element={<SidebarLayout />}>
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/" element={<AppPage />} />
+                    <Route path="/page/:id" element={<SinglePage />} />
                 </Route>
             </Route>
 

@@ -10,6 +10,5 @@ export const fetchPages = async (userId: number) => {
 
 export const fetchPage = async (page_id: number) => {
     const url = `${BASE_API_URL}/${API_ENDPOINTS.PAGE}/${page_id}`
-    console.log(url)
     return apiClient<Page>(url, 'GET')
 }

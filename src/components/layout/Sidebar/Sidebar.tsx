@@ -1,22 +1,25 @@
 import styles from './Sidebar.module.css'
 import { usePages } from "@/hooks/usePages"
 import { useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
 
-    const { getPages, pages, loadingPages, getSinglePage } = usePages()
+    const navigate = useNavigate()
+
+    const { getPages, pages, loadingPages } = usePages()
 
     useEffect(() => {
         const init = async () => {
             await getPages(1)
-            const page = await getSinglePage(5)
-            console.log(page)
         }
         init()
 
     }, [])
 
-    console.log(pages)
+    const handlePageClick = (id: number) => {
+        navigate(`/page/${id}`)
+    }
 
     return (
         <aside className={styles.sidebar}>
@@ -27,6 +30,7 @@ export const Sidebar = () => {
                     {pages && pages.map(page => (
                         <li
                             key={page.id}
+                            onClick={() => handlePageClick(page.id!)}
                         >
                             {page.name}
                         </li>
