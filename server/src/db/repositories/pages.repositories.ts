@@ -38,7 +38,6 @@ export const createPageDB = async (newPage: Partial<Page>) => {
             [newPage.name, newPage.user_id, newPage.parent_page_id]
         );
     } catch (error) {
-        // Optionally pass a custom message if you want more context
         parseDbError(error, `Failed to create page "${newPage.name}"`);
     }
 };
@@ -82,9 +81,9 @@ export const updatePageDB = async (pageId: string, updates: Partial<Page>) => {
 
         const setQuery = setClauses.join(", ");
         const query = `
-          UPDATE ${TABLES.PAGES}
-          SET ${setQuery}
-          WHERE ${PAGES_COLUMNS.ID} = $${index}
+            UPDATE ${TABLES.PAGES}
+            SET ${setQuery}
+            WHERE ${PAGES_COLUMNS.ID} = $${index}
           RETURNING *
         `;
         values.push(pageId);
