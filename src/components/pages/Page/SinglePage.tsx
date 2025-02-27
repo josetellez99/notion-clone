@@ -8,20 +8,27 @@ export const SinglePage = () => {
     const { getSinglePage } = usePages()
     const { id } = useParams()
 
-    const [page, setPage] = useState<PageType | undefined>(undefined)
+    const [page, setPage] = useState<PageType>()
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const init = async () => {
             const res = await getSinglePage(Number(id))
             setPage(res)
+            setLoading(false)
         }
         init()
-    }, [])
+    }, [id])
 
-    console.log(page)
+    if(loading) {
+        return <p>Cargando...</p>
+    }
+
+    if(!page) {
+        return <p>There was an error.</p>
+    }
 
     return (
-        <p>Hello world, {id}</p>
+        <p>{page.name}</p>
     )
-
 }

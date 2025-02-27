@@ -1,17 +1,20 @@
 import styles from './Sidebar.module.css'
 import { usePages } from "@/hooks/usePages"
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
 
     const navigate = useNavigate()
 
-    const { getPages, pages, loadingPages } = usePages()
+    const { getPages, pages } = usePages()
+
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const init = async () => {
             await getPages(1)
+            setLoading(false)
         }
         init()
 
@@ -23,7 +26,7 @@ export const Sidebar = () => {
 
     return (
         <aside className={styles.sidebar}>
-            {loadingPages ? (
+            {loading ? (
                 <p>Cargando...</p>
             ) : (
                 <ul>
