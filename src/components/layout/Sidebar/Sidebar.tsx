@@ -2,6 +2,7 @@ import styles from './Sidebar.module.css'
 import { usePages } from "@/hooks/usePages"
 import { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
+import { SidebarSectionHeader } from '@/components/layout/Sidebar/SectionHeader/SectionHeader';
 
 export const Sidebar = () => {
 
@@ -30,16 +31,19 @@ export const Sidebar = () => {
             {loading ? (
                 <p>Cargando...</p>
             ) : (
-                <ul>
-                    {pages && pages.map(page => (
-                        <li
-                            key={page.id}
-                            onClick={() => handlePageClick(page.id!)}
-                        >
-                            {page.name}
-                        </li>
-                    ))}
-                </ul>
+                <div>
+                    <SidebarSectionHeader />
+                    <ul>
+                        {pages && pages.map(page => (
+                            <li
+                                key={page.id}
+                                onClick={() => handlePageClick(page.id!)}
+                            >
+                                {page.name}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             )}
         </aside>
     )

@@ -1,4 +1,6 @@
 .sidebar {
     width: 16%;
-    background-color: aqua;
+    background-color: #f8f8f7;
+    color: #5f5b5e;
+    padding: 4px;
 }

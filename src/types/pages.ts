@@ -3,7 +3,7 @@ export interface Page {
     name: string;
     created_at: string;
     last_modified: string;
-    user_id: string;
+    user_id: number;
     is_favorite: boolean;
     status: Page_Status
     description?: string;
