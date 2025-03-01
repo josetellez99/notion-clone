@@ -2,6 +2,7 @@ import styles from './SectionHeader.module.css'
 import { DefaultCard } from '@/components/reusables/DefaultCard/DefaultCard'
 import { usePages } from '@/hooks/usePages'
 import { Page } from '@/types/pages'
+import { useNavigate } from "react-router-dom";
 
 const newPage: Partial<Page> = {
     name: '',
@@ -10,17 +11,20 @@ const newPage: Partial<Page> = {
 
 export const SidebarSectionHeader = () => {
 
-    const { addPage } = usePages()
+    const navigate = useNavigate()
+
+    const { addPage, setCurrentPageIndex, pages, setPages } = usePages()
 
     const handleCick = async () => {
 
         try {
             const res = await addPage(newPage)
-            console.log(res)
-
-            // TODO: add the new page to the pages state
-            // TODO: navigate to the new page
-            // TODO: sync the data to edit and send to the database in real time
+            navigate(`/page/${res.id}`)
+            setCurrentPageIndex(pages.length)
+            setPages((prev) => {
+                const newPages = [...prev || [], res]
+                return newPages
+            })
         } catch {
             console.log('error')
         }
