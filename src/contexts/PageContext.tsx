@@ -1,16 +1,17 @@
 import { Page } from "@/types/pages";
-import { useState, createContext, ReactNode } from "react";
+import React, { useState, createContext, ReactNode } from "react";
 import { fetchPages, fetchPage, createPage } from "@/api/pagesApi";
 
 interface PageContextProps {
     pages: Partial<Page>[];
+    setPages: React.Dispatch<React.SetStateAction<Page[] | null>>;
     addPage: (new_page: Partial<Page>) => Promise<Page>;
     deletePage: (id: string) => void;
     updatePage: (id: string, updatePage: Partial<Page>) => void;
     getPages: (user_id: number) => void;
     getSinglePage: (page_id: number) => Promise<Page | undefined>;
     currentPageIndex: number | null;
-    setCurrentPageIndex: (newIndex: number | null) => void;
+    setCurrentPageIndex: React.Dispatch<React.SetStateAction<number | null>>
 }
 
 export const PageContext = createContext<PageContextProps | null>(null)
@@ -71,6 +72,7 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
 
     const data = {
         pages,
+        setPages,
         getPages,
         getSinglePage,
         addPage,
