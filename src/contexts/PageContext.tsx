@@ -4,11 +4,13 @@ import { fetchPages, fetchPage, createPage } from "@/api/pagesApi";
 
 interface PageContextProps {
     pages: Partial<Page>[];
-    addPage: (new_page: Partial<Page>) => void;
+    addPage: (new_page: Partial<Page>) => Promise<Page>;
     deletePage: (id: string) => void;
     updatePage: (id: string, updatePage: Partial<Page>) => void;
     getPages: (user_id: number) => void;
-    getSinglePage: (page_id: number) => Promise<Page | undefined>
+    getSinglePage: (page_id: number) => Promise<Page | undefined>;
+    currentPageIndex: number | null;
+    setCurrentPageIndex: (newIndex: number | null) => void;
 }
 
 export const PageContext = createContext<PageContextProps | null>(null)
@@ -20,6 +22,9 @@ interface PagesProviderProps {
 export const PagesProvider = ({ children }: PagesProviderProps) => {
 
     const [pages, setPages] = useState<Page[] | null>(null)
+    const [currentPageIndex, setCurrentPageIndex] = useState<number | null>(null)
+
+    console.log(currentPageIndex)
 
     const getPages = async (userId: number) => {
 
@@ -70,7 +75,9 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         getSinglePage,
         addPage,
         deletePage,
-        updatePage
+        updatePage,
+        currentPageIndex,
+        setCurrentPageIndex
     }
 
     return (

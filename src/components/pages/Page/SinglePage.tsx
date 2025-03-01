@@ -2,6 +2,7 @@ import { useState, useEffect} from "react"
 import { Page as PageType } from "@/types/pages"
 import { usePages } from "@/hooks/usePages"
 import { useParams } from "react-router-dom"
+import styles from './Page.module.css'
 
 export const SinglePage = () => {
 
@@ -31,6 +32,6 @@ export const SinglePage = () => {
     }
 
     return (
-        <p>{page.name}</p>
+        <p className={styles.name}>{page.name}</p>
     )
 }

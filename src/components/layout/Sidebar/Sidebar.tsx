@@ -7,7 +7,7 @@ import { SidebarSectionHeader } from '@/components/layout/Sidebar/SectionHeader/
 export const Sidebar = () => {
 
     const navigate = useNavigate()
-    const { getPages, pages } = usePages()
+    const { getPages, pages, setCurrentPageIndex } = usePages()
 
     const [loading, setLoading] = useState(true)
 
@@ -21,8 +21,9 @@ export const Sidebar = () => {
 
     }, [])
 
-    const handlePageClick = (id: number) => {
+    const handlePageClick = (id: number, index: number) => {
         navigate(`/page/${id}`)
+        setCurrentPageIndex(index)
     }
 
     return (
@@ -33,12 +34,12 @@ export const Sidebar = () => {
                 <div>
                     <SidebarSectionHeader />
                     <ul>
-                        {pages && pages.map(page => (
+                        {pages && pages.map((page, index) => (
                             <li
                                 key={page.id}
-                                onClick={() => handlePageClick(page.id!)}
+                                onClick={() => handlePageClick(page.id!, index)}
                             >
-                                {page.name}
+                                {page.name || 'New page'}
                             </li>
                         ))}
                     </ul>
