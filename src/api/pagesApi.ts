@@ -12,3 +12,11 @@ export const fetchPage = async (page_id: number) => {
     const url = `${BASE_API_URL}/${API_ENDPOINTS.PAGE}/${page_id}`
     return apiClient<Page>(url, 'GET')
 }
+
+export const createPage = async (newPage: Partial<Page>): Promise<Page> => {
+    const url = `${BASE_API_URL}/${API_ENDPOINTS.PAGES}`
+    const body = {
+        ...newPage
+    }
+    return apiClient<Page>(url, 'POST', undefined, body)
+}

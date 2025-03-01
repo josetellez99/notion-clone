@@ -7,7 +7,6 @@ import { SidebarSectionHeader } from '@/components/layout/Sidebar/SectionHeader/
 export const Sidebar = () => {
 
     const navigate = useNavigate()
-
     const { getPages, pages } = usePages()
 
     const [loading, setLoading] = useState(true)

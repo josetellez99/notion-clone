@@ -1,6 +1,6 @@
 import { Page } from "@/types/pages";
 import { useState, createContext, ReactNode } from "react";
-import { fetchPages, fetchPage } from "@/api/pagesApi";
+import { fetchPages, fetchPage, createPage } from "@/api/pagesApi";
 
 interface PageContextProps {
     pages: Partial<Page>[];
@@ -41,7 +41,7 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
 
     const addPage = async (newPage: Partial<Page>) => {
         try {
-            console.log(newPage)
+            return await createPage(newPage)
         } catch {
             console.log('error')
         }

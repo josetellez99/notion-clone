@@ -12,16 +12,19 @@ export const SidebarSectionHeader = () => {
 
     const { addPage } = usePages()
 
-    const handleCick = () => {
+    const handleCick = async () => {
 
         try {
-            const res = addPage(newPage)
+            const res = await addPage(newPage)
+            console.log(res)
 
+            // TODO: add the new page to the pages state
+            // TODO: navigate to the new page
+            // TODO: sync the data to edit and send to the database in real time
         } catch {
             console.log('error')
         }
     }
-
 
     return (
         <DefaultCard>
