@@ -5,6 +5,7 @@ import { fetchPages, fetchPage, createPage } from "@/api/pagesApi";
 interface PageContextProps {
     pages: Partial<Page>[];
     setPages: React.Dispatch<React.SetStateAction<Page[] | null>>;
+    updatePagesData: <K extends keyof Page>(field: K, newValue: Page[K], index: number) => void;
     addPage: (new_page: Partial<Page>) => Promise<Page>;
     deletePage: (id: string) => void;
     updatePage: (id: string, updatePage: Partial<Page>) => void;
@@ -25,7 +26,11 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
     const [pages, setPages] = useState<Page[] | null>(null)
     const [currentPageIndex, setCurrentPageIndex] = useState<number | null>(null)
 
-    console.log(currentPageIndex)
+    const updatePagesData = <K extends keyof Page>(field: K, newValue: Page[K], index: number): void => {
+        const newPages = [...pages || []]
+        newPages[index!][field] = newValue
+        setPages(newPages)
+    }
 
     const getPages = async (userId: number) => {
 
@@ -42,7 +47,7 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
             return await fetchPage(pageId)
         } catch (error) {
             console.log(error)
-        } 
+        }
     }
 
     const addPage = async (newPage: Partial<Page>) => {
@@ -73,6 +78,7 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
     const data = {
         pages,
         setPages,
+        updatePagesData,
         getPages,
         getSinglePage,
         addPage,

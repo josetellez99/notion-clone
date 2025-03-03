@@ -19,12 +19,12 @@ export const SidebarSectionHeader = () => {
 
         try {
             const res = await addPage(newPage)
-            navigate(`/page/${res.id}`)
             setCurrentPageIndex(pages.length)
             setPages((prev) => {
                 const newPages = [...prev || [], res]
                 return newPages
             })
+            navigate(`/page/${res.id}`)
         } catch {
             console.log('error')
         }

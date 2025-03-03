@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react"
+import React, { useState, useEffect } from "react"
 import { Page as PageType } from "@/types/pages"
 import { usePages } from "@/hooks/usePages"
 import { useParams } from "react-router-dom"
@@ -6,7 +6,7 @@ import styles from './Page.module.css'
 
 export const SinglePage = () => {
 
-    const { getSinglePage } = usePages()
+    const { getSinglePage, updatePagesData, currentPageIndex } = usePages()
     const { id } = useParams()
 
     const [page, setPage] = useState<PageType>()
@@ -16,22 +16,36 @@ export const SinglePage = () => {
         setLoading(true)
         const init = async () => {
             const res = await getSinglePage(Number(id))
-            setPage(res)
+            if (res) {
+                setPage(res)
+            }
             setLoading(false)
         }
         init()
     }, [id])
 
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value
+        if (page) {
+            setPage({ ...page, name: newValue })
+            updatePagesData('name', newValue, currentPageIndex!)
+        }
+    }
 
-    if(loading) {
+
+    if (loading) {
         return <p>Cargando...</p>
     }
 
-    if(!page) {
+    if (!page) {
         return <p>There was an error.</p>
     }
 
     return (
-        <p className={styles.name}>{page.name}</p>
+        <input
+            className={styles.name}
+            onChange={handleNameChange}
+            value={page.name}
+        />
     )
 }
