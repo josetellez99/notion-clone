@@ -26,6 +26,8 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
     const [pages, setPages] = useState<Page[] | null>(null)
     const [currentPageIndex, setCurrentPageIndex] = useState<number | null>(null)
 
+    console.log(pages)
+
     const updatePagesData = <K extends keyof Page>(field: K, newValue: Page[K], index: number): void => {
         const newPages = [...pages || []]
         newPages[index!][field] = newValue
