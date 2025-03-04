@@ -13,12 +13,13 @@ export const SidebarSectionHeader = () => {
 
     const navigate = useNavigate()
 
-    const { addPage, setCurrentPageIndex, pages, setPages } = usePages()
+    const { addPage, setCurrentPageIndex, pages, setPages, setCurrentPage } = usePages()
 
     const handleCick = async () => {
 
         try {
             const res = await addPage(newPage)
+            setCurrentPage(res)
             setCurrentPageIndex(pages.length)
             setPages((prev) => {
                 const newPages = [...prev || [], res]
