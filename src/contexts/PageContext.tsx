@@ -1,18 +1,18 @@
 import { Page } from "@/types/pages";
 import React, { useState, createContext, ReactNode } from "react";
-import { fetchPages, createPage } from "@/api/pagesApi";
+import { fetchPages, createPage, fetchPage } from "@/api/pagesApi";
 
 interface PageContextProps {
     pages: Partial<Page>[];
     setPages: React.Dispatch<React.SetStateAction<Page[] | null>>;
     currentPage: Page | null;
-    setCurrentPage: React.Dispatch<React.SetStateAction<Page | null>>
+    setCurrentPage: React.Dispatch<React.SetStateAction<Partial<Page> | null>>
     updatePagesData: <K extends keyof Page>(field: K, newValue: Page[K], index: number) => void;
     addPage: (new_page: Partial<Page>) => Promise<Page>;
     deletePage: (id: string) => void;
     updatePage: (id: string, updatePage: Partial<Page>) => void;
     getPages: (user_id: number) => void;
-    // getSinglePage: (page_id: number) => Promise<Page | undefined>;
+    getCurrentPage: (page_id: number) => void;
     currentPageIndex: number | null;
     setCurrentPageIndex: React.Dispatch<React.SetStateAction<number | null>>
 }
@@ -26,7 +26,7 @@ interface PagesProviderProps {
 export const PagesProvider = ({ children }: PagesProviderProps) => {
 
     const [pages, setPages] = useState<Page[] | null>(null)
-    const [currentPage, setCurrentPage] = useState<Page | null>(null)
+    const [currentPage, setCurrentPage] = useState<Partial<Page> | null>(null)
     const [currentPageIndex, setCurrentPageIndex] = useState<number | null>(null)
 
     const updatePagesData = <K extends keyof Page>(field: K, newValue: Page[K], index: number): void => {
@@ -53,9 +53,19 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         }
     }
 
-    // const getSinglePage = async (pageId: number): Promise<Page | undefined> => {
-        
-    // }
+    const getCurrentPage = async (pageId: number) => {
+        if(currentPageIndex) {
+            const page = pages![currentPageIndex]
+            setCurrentPage(page)
+        } else {
+            const page = pages?.find(p => p.id === pageId)
+            if(page) {
+                setCurrentPage(page)
+            }
+            const fetchedPage = await fetchPage(pageId)
+            setCurrentPage(fetchedPage)
+        }
+    }
 
     const addPage = async (newPage: Partial<Page>) => {
         try {
@@ -89,7 +99,7 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         setCurrentPage,
         updatePagesData,
         getPages,
-        // getSinglePage,
+        getCurrentPage,
         addPage,
         deletePage,
         updatePage,

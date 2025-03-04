@@ -8,7 +8,7 @@ import { DefaultCard } from '@/components/reusables/DefaultCard/DefaultCard';
 export const Sidebar = () => {
 
     const navigate = useNavigate()
-    const { getPages, pages, setCurrentPageIndex, updatePagesData } = usePages()
+    const { getPages, pages, setCurrentPageIndex, updatePagesData, setCurrentPage } = usePages()
 
     const [loading, setLoading] = useState(true)
 
@@ -25,6 +25,8 @@ export const Sidebar = () => {
     const handlePageClick = (id: number, index: number) => {
         navigate(`/page/${id}`)
         setCurrentPageIndex(index)
+        const newCurrentPage = pages[index]
+        setCurrentPage(newCurrentPage)
     }
 
     const handleOnChangePageName = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
