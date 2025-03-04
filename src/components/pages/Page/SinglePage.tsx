@@ -6,23 +6,23 @@ import styles from './Page.module.css'
 
 export const SinglePage = () => {
 
-    const { getSinglePage, updatePagesData, currentPageIndex } = usePages()
+    const { updatePagesData, currentPageIndex } = usePages()
     const { id } = useParams()
 
     const [page, setPage] = useState<PageType>()
-    const [loading, setLoading] = useState(true)
+    // const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        setLoading(true)
-        const init = async () => {
-            const res = await getSinglePage(Number(id))
-            if (res) {
-                setPage(res)
-            }
-            setLoading(false)
-        }
-        init()
-    }, [id])
+    // useEffect(() => {
+    //     setLoading(true)
+    //     const init = async () => {
+    //         const res = await getSinglePage(Number(id))
+    //         if (res) {
+    //             setPage(res)
+    //         }
+    //         setLoading(false)
+    //     }
+    //     init()
+    // }, [id])
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value
@@ -33,9 +33,9 @@ export const SinglePage = () => {
     }
 
 
-    if (loading) {
-        return <p>Cargando...</p>
-    }
+    // if (loading) {
+    //     return <p>Cargando...</p>
+    // }
 
     if (!page) {
         return <p>There was an error.</p>

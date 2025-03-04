@@ -1,16 +1,18 @@
 import { Page } from "@/types/pages";
 import React, { useState, createContext, ReactNode } from "react";
-import { fetchPages, fetchPage, createPage } from "@/api/pagesApi";
+import { fetchPages, createPage } from "@/api/pagesApi";
 
 interface PageContextProps {
     pages: Partial<Page>[];
     setPages: React.Dispatch<React.SetStateAction<Page[] | null>>;
+    currentPage: Page | null;
+    setCurrentPage: React.Dispatch<React.SetStateAction<Page | null>>
     updatePagesData: <K extends keyof Page>(field: K, newValue: Page[K], index: number) => void;
     addPage: (new_page: Partial<Page>) => Promise<Page>;
     deletePage: (id: string) => void;
     updatePage: (id: string, updatePage: Partial<Page>) => void;
     getPages: (user_id: number) => void;
-    getSinglePage: (page_id: number) => Promise<Page | undefined>;
+    // getSinglePage: (page_id: number) => Promise<Page | undefined>;
     currentPageIndex: number | null;
     setCurrentPageIndex: React.Dispatch<React.SetStateAction<number | null>>
 }
@@ -24,14 +26,21 @@ interface PagesProviderProps {
 export const PagesProvider = ({ children }: PagesProviderProps) => {
 
     const [pages, setPages] = useState<Page[] | null>(null)
+    const [currentPage, setCurrentPage] = useState<Page | null>(null)
     const [currentPageIndex, setCurrentPageIndex] = useState<number | null>(null)
-
-    console.log(pages)
 
     const updatePagesData = <K extends keyof Page>(field: K, newValue: Page[K], index: number): void => {
         const newPages = [...pages || []]
         newPages[index!][field] = newValue
         setPages(newPages)
+
+        if(index === currentPageIndex) {
+            const newPage = newPages[index]
+            newPage[field] = newValue
+            setCurrentPage(newPage)
+        }
+
+        // TODO: add the debounce function to update the database. Update all pages or one single page? -> of course one single page
     }
 
     const getPages = async (userId: number) => {
@@ -44,13 +53,9 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         }
     }
 
-    const getSinglePage = async (pageId: number): Promise<Page | undefined> => {
-        try {
-            return await fetchPage(pageId)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // const getSinglePage = async (pageId: number): Promise<Page | undefined> => {
+        
+    // }
 
     const addPage = async (newPage: Partial<Page>) => {
         try {
@@ -80,9 +85,11 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
     const data = {
         pages,
         setPages,
+        currentPage,
+        setCurrentPage,
         updatePagesData,
         getPages,
-        getSinglePage,
+        // getSinglePage,
         addPage,
         deletePage,
         updatePage,
