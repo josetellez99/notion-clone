@@ -1,6 +1,6 @@
 export const apiClient = async <T>(
     url: string,
-    method: string = "GET",
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' = "GET",
     headers: Record<string, string> = {},
     body?: object
 ): Promise<T> => {

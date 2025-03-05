@@ -20,3 +20,11 @@ export const createPage = async (newPage: Partial<Page>): Promise<Page> => {
     }
     return apiClient<Page>(url, 'POST', undefined, body)
 }
+
+export const updatePage = async (updatedPage: Partial<Page>): Promise<Page> => {
+    const url = `${BASE_API_URL}/${API_ENDPOINTS.PAGES}`
+    const body = {
+        ...updatedPage
+    }
+    return apiClient<Page>(url, 'PUT', undefined, body)
+}
