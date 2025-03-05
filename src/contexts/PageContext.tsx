@@ -29,6 +29,15 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
     const [currentPage, setCurrentPage] = useState<Partial<Page> | null>(null)
     const [currentPageIndex, setCurrentPageIndex] = useState<number | null>(null)
 
+    let updateTimeout: NodeJS.Timeout | null = null
+
+    const syncPageDB = (newPage: Partial<Page>, page_id: number) => {
+        if (updateTimeout) clearTimeout(updateTimeout)
+        updateTimeout = setTimeout(async () => {
+            await updatePageDB(newPage, page_id)
+        }, 800)
+    }
+
     const updatePagesData = async <K extends keyof Page>(field: K, newValue: Page[K], index: number): Promise<void> => {
         const newPages = [...pages || []];
         const newPage = newPages[index!];
@@ -36,8 +45,8 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         newPages[index] = newPage
         setPages(newPages)
 
-        await updatePageDB(newPage, newPage.id)
         if (index === currentPageIndex) setCurrentPage(newPage)
+        syncPageDB(newPage, newPage.id)
     }
 
     const getPages = async (userId: number) => {
