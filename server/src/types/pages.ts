@@ -13,3 +13,7 @@ export interface Page {
 }
 
 export type Page_Status = 'active' | 'archived';
+
+export interface JoinedPage extends Page {
+    children: Page[]
+}

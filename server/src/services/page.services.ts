@@ -1,5 +1,5 @@
 import { createPageDB, deletePageDb, fetchUserPages, updatePageDB, checkCircularReferenceDB, fetchPage } from "@/db/repositories/pages.repositories";
-import { Page } from '@/types/pages';
+import { Page, JoinedPage } from '@/types/pages';
 
 export const getAllUserPages = async (userId: string) => {
     const res = await fetchUserPages(userId)
@@ -54,7 +54,7 @@ export const createPage = async (data: Partial<Page>) => {
     return newPage;
 };
 
-export const updatePage = async (pageId: string, data: Partial<Page>) => {
+export const updatePage = async (pageId: string, data: Partial<JoinedPage>) => {
 
     const hasCircularReference = await checkCircularReferenceDB(pageId, data.parent_page_id);
 
@@ -62,7 +62,12 @@ export const updatePage = async (pageId: string, data: Partial<Page>) => {
         throw new Error("Circular reference detected. Page creation rolled back.")
     }
 
-    const res = await updatePageDB(pageId, data)
+    // Remove the children prop from the page object
+
+    const { children, ...cleanPage} = data
+    console.log(children)
+
+    const res = await updatePageDB(pageId, cleanPage)
     return res?.rows[0]
 }
 
