@@ -1,6 +1,6 @@
 import { Page } from "@/types/pages";
 import React, { useState, createContext, ReactNode } from "react";
-import { fetchPages, createPage, fetchPage } from "@/api/pagesApi";
+import { fetchPages, createPage, fetchPage, updatePageDB } from "@/api/pagesApi";
 
 interface PageContextProps {
     pages: Partial<Page>[];
@@ -29,18 +29,15 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
     const [currentPage, setCurrentPage] = useState<Partial<Page> | null>(null)
     const [currentPageIndex, setCurrentPageIndex] = useState<number | null>(null)
 
-    const updatePagesData = <K extends keyof Page>(field: K, newValue: Page[K], index: number): void => {
-        const newPages = [...pages || []]
-        newPages[index!][field] = newValue
+    const updatePagesData = async <K extends keyof Page>(field: K, newValue: Page[K], index: number): Promise<void> => {
+        const newPages = [...pages || []];
+        const newPage = newPages[index!];
+        newPage[field] = newValue;
+        newPages[index] = newPage
         setPages(newPages)
 
-        if(index === currentPageIndex) {
-            const newPage = newPages[index]
-            newPage[field] = newValue
-            setCurrentPage(newPage)
-        }
-
-        // TODO: add the debounce function to update the database. Update all pages or one single page? -> of course one single page
+        await updatePageDB(newPage, newPage.id)
+        if (index === currentPageIndex) setCurrentPage(newPage)
     }
 
     const getPages = async (userId: number) => {
@@ -54,12 +51,12 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
     }
 
     const getCurrentPage = async (pageId: number) => {
-        if(currentPageIndex) {
+        if (currentPageIndex) {
             const page = pages![currentPageIndex]
             setCurrentPage(page)
         } else {
             const page = pages?.find(p => p.id === pageId)
-            if(page) {
+            if (page) {
                 setCurrentPage(page)
             }
             const fetchedPage = await fetchPage(pageId)

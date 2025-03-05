@@ -21,8 +21,8 @@ export const createPage = async (newPage: Partial<Page>): Promise<Page> => {
     return apiClient<Page>(url, 'POST', undefined, body)
 }
 
-export const updatePage = async (updatedPage: Partial<Page>): Promise<Page> => {
-    const url = `${BASE_API_URL}/${API_ENDPOINTS.PAGES}`
+export const updatePageDB = async (updatedPage: Partial<Page>, page_id: number): Promise<Page> => {
+    const url = `${BASE_API_URL}/${API_ENDPOINTS.PAGES}/${page_id}`
     const body = {
         ...updatedPage
     }
