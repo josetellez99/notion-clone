@@ -10,27 +10,15 @@ export const Sidebar = () => {
     const navigate = useNavigate()
     const { pages, updatePagesData, setCurrentPage } = usePages()
 
-    // const [loading, setLoading] = useState(true)
-
-    // useEffect(() => {
-    //     setLoading(true)
-    //     const init = async () => {
-    //         await getPages(1)
-    //         setLoading(false)
-    //     }
-    //     init()
-
-    // }, [])
-
     const handlePageClick = (id: number) => {
         navigate(`/page/${id}`)
         const newCurrentPage = pages[id]
         setCurrentPage(newCurrentPage)
     }
 
-    const handleOnChangePageName = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const handleOnChangePageName = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
         const newValue = e.target.value
-        updatePagesData('name', newValue, index!)
+        updatePagesData('name', newValue, id!)
     }
 
     return (
@@ -41,14 +29,14 @@ export const Sidebar = () => {
                 <div>
                     <SidebarSectionHeader />
                     <ul>
-                        {pages && Object.values(pages).map((page, index) => (
+                        {pages && Object.values(pages).map((page) => (
                             <li
                                 key={page.id}
                                 onClick={() => handlePageClick(page.id!)}
                             >
                                 <DefaultCard>
                                     <input
-                                        onChange={(e) => handleOnChangePageName(e, index)}
+                                        onChange={(e) => handleOnChangePageName(e, page.id)}
                                         value={page.name || 'New page'}
                                     />
                                 </DefaultCard>
