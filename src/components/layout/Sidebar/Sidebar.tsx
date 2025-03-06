@@ -1,6 +1,6 @@
 import styles from './Sidebar.module.css'
 import { usePages } from "@/hooks/usePages"
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useNavigate } from "react-router-dom";
 import { SidebarSectionHeader } from '@/components/layout/Sidebar/SectionHeader/SectionHeader';
 import { DefaultCard } from '@/components/reusables/DefaultCard/DefaultCard';
@@ -8,24 +8,23 @@ import { DefaultCard } from '@/components/reusables/DefaultCard/DefaultCard';
 export const Sidebar = () => {
 
     const navigate = useNavigate()
-    const { getPages, pages, setCurrentPageIndex, updatePagesData, setCurrentPage } = usePages()
+    const { pages, updatePagesData, setCurrentPage } = usePages()
 
-    const [loading, setLoading] = useState(true)
+    // const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        setLoading(true)
-        const init = async () => {
-            await getPages(1)
-            setLoading(false)
-        }
-        init()
+    // useEffect(() => {
+    //     setLoading(true)
+    //     const init = async () => {
+    //         await getPages(1)
+    //         setLoading(false)
+    //     }
+    //     init()
 
-    }, [])
+    // }, [])
 
-    const handlePageClick = (id: number, index: number) => {
+    const handlePageClick = (id: number) => {
         navigate(`/page/${id}`)
-        setCurrentPageIndex(index)
-        const newCurrentPage = pages[index]
+        const newCurrentPage = pages[id]
         setCurrentPage(newCurrentPage)
     }
 
@@ -36,16 +35,16 @@ export const Sidebar = () => {
 
     return (
         <aside className={styles.sidebar}>
-            {loading ? (
+            {/* {loading ? (
                 <p>Cargando...</p>
-            ) : (
+            ) : ( */}
                 <div>
                     <SidebarSectionHeader />
                     <ul>
-                        {pages && pages.map((page, index) => (
+                        {pages && Object.values(pages).map((page, index) => (
                             <li
                                 key={page.id}
-                                onClick={() => handlePageClick(page.id!, index)}
+                                onClick={() => handlePageClick(page.id!)}
                             >
                                 <DefaultCard>
                                     <input
@@ -57,7 +56,7 @@ export const Sidebar = () => {
                         ))}
                     </ul>
                 </div>
-            )}
+            {/* )} */}
         </aside>
     )
 }

@@ -3,8 +3,8 @@ import React, { useState, createContext, ReactNode } from "react";
 import { fetchPages, createPage, fetchPage, updatePageDB } from "@/api/pagesApi";
 
 interface PageContextProps {
-    pages: Partial<Page>[];
-    setPages: React.Dispatch<React.SetStateAction<Page[] | null>>;
+    pages: PagesState;
+    setPages: React.Dispatch<React.SetStateAction<PagesState | null>>;
     currentPage: Page | null;
     setCurrentPage: React.Dispatch<React.SetStateAction<Partial<Page> | null>>
     updatePagesData: <K extends keyof Page>(field: K, newValue: Page[K], index: number) => void;
@@ -13,11 +13,13 @@ interface PageContextProps {
     updatePage: (id: string, updatePage: Partial<Page>) => void;
     getPages: (user_id: number) => void;
     getCurrentPage: (page_id: number) => void;
-    currentPageIndex: number | null;
-    setCurrentPageIndex: React.Dispatch<React.SetStateAction<number | null>>
 }
 
 export const PageContext = createContext<PageContextProps | null>(null)
+
+export interface PagesState {
+    [id: number]: Page
+}
 
 interface PagesProviderProps {
     children: ReactNode;
@@ -25,9 +27,8 @@ interface PagesProviderProps {
 
 export const PagesProvider = ({ children }: PagesProviderProps) => {
 
-    const [pages, setPages] = useState<Page[] | null>(null)
+    const [pages, setPages] = useState<PagesState | null>(null)
     const [currentPage, setCurrentPage] = useState<Partial<Page> | null>(null)
-    const [currentPageIndex, setCurrentPageIndex] = useState<number | null>(null)
 
     let updateTimeout: NodeJS.Timeout | null = null
 
@@ -38,14 +39,15 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         }, 800)
     }
 
-    const updatePagesData = async <K extends keyof Page>(field: K, newValue: Page[K], index: number): Promise<void> => {
-        const newPages = [...pages || []];
-        const newPage = newPages[index!];
+    const updatePagesData = async <K extends keyof Page>(field: K, newValue: Page[K], id: number): Promise<void> => {
+
+        const newPages = { ...pages || {} };
+        const newPage = newPages[id!];
         newPage[field] = newValue;
-        newPages[index] = newPage
+        newPages[id] = newPage
         setPages(newPages)
 
-        if (index === currentPageIndex) setCurrentPage(newPage)
+        // if (index === currentPageIndex) setCurrentPage(newPage)
         syncPageDB(newPage, newPage.id)
     }
 
@@ -53,24 +55,26 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
 
         try {
             const res = await fetchPages(userId)
-            setPages(res)
+            console.log(res)
+            const formattedPages: PagesState = {}
+            res.forEach(page => {
+                formattedPages[page.id] = page
+            })
+            setPages(formattedPages)
         } catch {
             console.log('error')
         }
     }
 
     const getCurrentPage = async (pageId: number) => {
-        if (currentPageIndex) {
-            const page = pages![currentPageIndex]
-            setCurrentPage(page)
-        } else {
-            const page = pages?.find(p => p.id === pageId)
-            if (page) {
-                setCurrentPage(page)
-            }
+        if(!pages) return
+        const currentPage = pages[pageId]
+        if (!currentPage) {
             const fetchedPage = await fetchPage(pageId)
             setCurrentPage(fetchedPage)
+            return
         }
+        setCurrentPage(currentPage)
     }
 
     const addPage = async (newPage: Partial<Page>) => {
@@ -109,8 +113,6 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         addPage,
         deletePage,
         updatePage,
-        currentPageIndex,
-        setCurrentPageIndex
     }
 
     return (

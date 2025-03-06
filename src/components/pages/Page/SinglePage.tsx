@@ -6,16 +6,16 @@ import styles from './Page.module.css'
 
 export const SinglePage = () => {
 
-    const { updatePagesData, currentPageIndex, currentPage, getCurrentPage } = usePages()
+    const { updatePagesData, currentPage, getCurrentPage } = usePages()
     const { id } = useParams()
+    const idAsNumber = Number(id)
 
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        if(currentPage) return
         setLoading(true)
         const init = async () => {
-            await getCurrentPage(Number(id))
+            await getCurrentPage(idAsNumber)
             setLoading(false)
         }
         init()
@@ -23,7 +23,7 @@ export const SinglePage = () => {
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value
-        updatePagesData('name', newValue, currentPageIndex!)
+        updatePagesData('name', newValue, idAsNumber)
     }
 
 
