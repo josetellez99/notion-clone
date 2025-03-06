@@ -1,6 +1,6 @@
 import styles from './Sidebar.module.css'
 import { usePages } from "@/hooks/usePages"
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { SidebarSectionHeader } from '@/components/layout/Sidebar/SectionHeader/SectionHeader';
 import { DefaultCard } from '@/components/reusables/DefaultCard/DefaultCard';
@@ -8,7 +8,7 @@ import { DefaultCard } from '@/components/reusables/DefaultCard/DefaultCard';
 export const Sidebar = () => {
 
     const navigate = useNavigate()
-    const { pages, updatePagesData, setCurrentPage } = usePages()
+    const { pages, updatePagesData, setCurrentPage, loading } = usePages()
 
     const handlePageClick = (id: number) => {
         navigate(`/page/${id}`)
@@ -23,9 +23,9 @@ export const Sidebar = () => {
 
     return (
         <aside className={styles.sidebar}>
-            {/* {loading ? (
+            {loading ? (
                 <p>Cargando...</p>
-            ) : ( */}
+            ) : (
                 <div>
                     <SidebarSectionHeader />
                     <ul>
@@ -44,7 +44,7 @@ export const Sidebar = () => {
                         ))}
                     </ul>
                 </div>
-            {/* )} */}
+            )}
         </aside>
     )
 }

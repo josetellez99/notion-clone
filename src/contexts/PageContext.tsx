@@ -4,6 +4,7 @@ import { fetchPages, createPage, fetchPage, updatePageDB } from "@/api/pagesApi"
 
 interface PageContextProps {
     pages: PagesState;
+    loading: boolean;
     setPages: React.Dispatch<React.SetStateAction<PagesState | null>>;
     currentPage: Page | null;
     setCurrentPage: React.Dispatch<React.SetStateAction<Partial<Page> | null>>
@@ -28,6 +29,7 @@ interface PagesProviderProps {
 export const PagesProvider = ({ children }: PagesProviderProps) => {
 
     const [pages, setPages] = useState<PagesState | null>(null)
+    const [loading, setLoading] = useState(false)
     const [currentPage, setCurrentPage] = useState<Partial<Page> | null>(null)
 
     let updateTimeout: NodeJS.Timeout | null = null
@@ -53,9 +55,9 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
 
     const getPages = async (userId: number) => {
 
+        setLoading(true)
         try {
             const res = await fetchPages(userId)
-            console.log(res)
             const formattedPages: PagesState = {}
             res.forEach(page => {
                 formattedPages[page.id] = page
@@ -63,6 +65,8 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
             setPages(formattedPages)
         } catch {
             console.log('error')
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -104,6 +108,7 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
 
     const data = {
         pages,
+        loading,
         setPages,
         currentPage,
         setCurrentPage,
