@@ -1,6 +1,6 @@
 import styles from './Sidebar.module.css'
 import { usePages } from "@/hooks/usePages"
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from "react-router-dom";
 import { SidebarSectionHeader } from '@/components/layout/Sidebar/SectionHeader/SectionHeader';
 import { DefaultCard } from '@/components/reusables/DefaultCard/DefaultCard';
