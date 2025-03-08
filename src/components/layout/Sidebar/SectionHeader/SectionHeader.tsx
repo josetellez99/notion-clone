@@ -13,18 +13,17 @@ export const SidebarSectionHeader = () => {
 
     const navigate = useNavigate()
 
-    const { addPage, setCurrentPageIndex, pages, setPages, setCurrentPage } = usePages()
+    const { addPage, setPages, setCurrentPage } = usePages()
 
-    const handleCick = async () => {
+    const handleAddPageClick = async () => {
 
         try {
             const res = await addPage(newPage)
             setCurrentPage(res)
-            setCurrentPageIndex(pages.length)
-            setPages((prev) => {
-                const newPages = [...prev || [], res]
-                return newPages
-            })
+            setPages((prev) => ({
+                ...prev,
+                [res.id]: res
+            }))
             navigate(`/page/${res.id}`)
         } catch {
             console.log('error')
@@ -38,7 +37,7 @@ export const SidebarSectionHeader = () => {
                     Private
                 </span>
                 <div>
-                    <button onClick={handleCick}>+</button>
+                    <button onClick={handleAddPageClick}>+</button>
                 </div>
             </div>
         </DefaultCard>
