@@ -1,17 +1,24 @@
-import { ReactNode } from "react"
+import React, { CSSProperties, ReactNode } from "react"
 import styles from './DefaultCard.module.css'
 
 interface props {
     children: ReactNode;
     showHover?: boolean;
-    onHover?: () => void;
+    onClick?: (e: React.MouseEvent<HTMLDivElement>, pageId?: number) => void
+    onMouseEnter?: (e: React.MouseEvent<HTMLDivElement>) => void;
     hoverColor?: string;
-    className?: string;
+    style?: CSSProperties
 }
 
-export const DefaultCard = ({children} : props) => {
+export const DefaultCard = ({children, onClick, onMouseEnter, style} : props) => {
+
     return (
-        <div className={styles.container}>
+        <div 
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            className={styles.container}
+            style={style}
+        >
             {children}
         </div>
     )
