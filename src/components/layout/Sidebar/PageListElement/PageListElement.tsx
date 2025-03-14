@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Page } from "@/types/pages"
+import { PageRendering } from "@/types/pages"
 import { DefaultCard } from '@/components/reusables/DefaultCard/DefaultCard';
 
 interface props {
-    page: Page;
+    page: PageRendering;
     onClick: (e: React.MouseEvent<HTMLDivElement>, pageId: number) => void;
     handleOnChangePageName: (e: React.ChangeEvent<HTMLInputElement>, id: number) => void;
     onAddingSubPage: (e: React.MouseEvent<HTMLButtonElement>, parentPageId: number) => void;
@@ -29,11 +29,20 @@ export const PageListElement = ({ page, onClick, handleOnChangePageName, onAddin
                     onChange={(e) => handleOnChangePageName(e, page.id)}
                     value={page.name || 'New page'}
                 />
-                { isHover && (
-                    <div>
+                {isHover && (
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                        }}
+                    >
                         <span>...</span>
                         <button
                             onClick={(e) => onAddingSubPage(e, page.id)}
+                            style={{
+                                padding: '0'
+                            }}
                         >+</button>
                     </div>
                 )}

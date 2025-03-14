@@ -5,27 +5,7 @@ export const getAllUserPages = async (userId: string) => {
     const res = await fetchUserPages(userId)
     const pages = res.rows
 
-    // create the structure hierarchical JSON for nested pages
-    const pagesMap = new Map()
-
-    pages.forEach((page) => {
-        pagesMap.set(page.id, {...page, children: []})
-    })
-
-    const parentPages: Page[] = []
-
-    pages.forEach((page) => {
-        if(page.parent_page_id) {
-            const parentPage = pagesMap.get(page.parent_page_id)
-            if(parentPage) {
-                parentPage.children.push(pagesMap.get(page.id))
-            }
-        } else {
-            parentPages.push(pagesMap.get(page.id))
-        }
-    })
-
-    return parentPages
+    return pages
 }
 
 export const getPage = async (page_id: string) => {

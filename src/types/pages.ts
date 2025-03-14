@@ -1,3 +1,5 @@
+export type Page_Status = 'active' | 'archived';
+
 export interface Page {
     id: number;
     name: string;
@@ -12,4 +14,6 @@ export interface Page {
     parent_page_id?: number;
 }
 
-export type Page_Status = 'active' | 'archived';
+export interface PageRendering extends Page {
+    children: PageRendering[]
+}
