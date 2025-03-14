@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { PageRendering } from "@/types/pages"
 import { DefaultCard } from '@/components/reusables/DefaultCard/DefaultCard';
 
@@ -9,7 +9,7 @@ interface props {
     onAddingSubPage: (e: React.MouseEvent<HTMLButtonElement>, parentPageId: number) => void;
 }
 
-export const PageListElement = ({ page, onClick, handleOnChangePageName, onAddingSubPage }: props) => {
+export const PageListElement = React.memo(({ page, onClick, handleOnChangePageName, onAddingSubPage }: props) => {
 
     const [isHover, setIsHover] = useState(false)
 
@@ -49,4 +49,4 @@ export const PageListElement = ({ page, onClick, handleOnChangePageName, onAddin
             </DefaultCard>
         </div>
     )
-}
+})

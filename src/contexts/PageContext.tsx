@@ -49,7 +49,6 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         newPages[id] = newPage
         setPages(newPages)
 
-        // if (index === currentPageIndex) setCurrentPage(newPage)
         syncPageDB(newPage, newPage.id)
     }
 
