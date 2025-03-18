@@ -51,7 +51,7 @@ export const Sidebar = () => {
                 <div>
                     <SidebarSectionHeader />
                     <ul>
-                        {pages && treePagesRender.map((page) => (
+                        {treePagesRender.map((page) => (
                             <li key={page.id} >
                                 <PageListElement
                                     key={page.id}

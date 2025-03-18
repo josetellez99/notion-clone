@@ -1,11 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { getAllUserPages, getPage, createPage, updatePage, deletePage } from "@/services/page.services";
+import { successResponse } from "@/utils/apiResponse";
+import { HTTP_STATUS } from "@/utils/httpStatus";
 
 export const getAllUserPagesAction = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = req.params;
         const pagesRes = await getAllUserPages(userId);
-        res.json([...pagesRes]);
+        return successResponse(res, pagesRes, "Pages fetched successfully", HTTP_STATUS.CREATED);
     } catch (error) {
         next(error);
     }
