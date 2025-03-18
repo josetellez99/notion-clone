@@ -7,5 +7,5 @@ import { errorResponse } from "@/utils/apiResponse";
  */
 export function errorHandler(err: unknown, req: Request, res: Response) {
     const apiError = mapErrorToApiResponse(err);
-    return errorResponse(res, apiError.message, apiError.statusCode, apiError.details )
+    errorResponse(res, apiError.message, apiError.statusCode, apiError.details )
 }

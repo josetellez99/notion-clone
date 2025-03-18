@@ -7,7 +7,7 @@ export const getAllUserPagesAction = async (req: Request, res: Response, next: N
     try {
         const { userId } = req.params;
         const pagesRes = await getAllUserPages(userId);
-        return successResponse(res, pagesRes, "Pages fetched successfully", HTTP_STATUS.CREATED);
+        return successResponse(res, pagesRes, "Pages fetched successfully", HTTP_STATUS.OK);
     } catch (error) {
         next(error);
     }
@@ -17,7 +17,7 @@ export const getPageByIdAction = async (req: Request, res: Response, next: NextF
     try {
         const { pageId } = req.params;
         const pageRes = await getPage(pageId);
-        res.json({ ...pageRes });
+        return successResponse(res, pageRes, "Page fetched successfully", HTTP_STATUS.OK);
     } catch (error) {
         next(error);
     }
@@ -27,7 +27,7 @@ export const createPageAction = async (req: Request, res: Response, next: NextFu
     try {
         const { ...newPage } = req.body;
         const pageRes = await createPage(newPage);
-        res.json({ ...pageRes });
+        return successResponse(res, pageRes, "Page created successfully", HTTP_STATUS.CREATED);
     } catch (error) {
         next(error);
     }
@@ -38,7 +38,7 @@ export const updatePageAction = async (req: Request, res: Response, next: NextFu
         const { ...newPage } = req.body;
         const { id } = req.params;
         const pageRes = await updatePage(id, newPage);
-        res.json({ ...pageRes });
+        return successResponse(res, pageRes, "Page updated successfully", HTTP_STATUS.OK);
     } catch (error) {
         next(error);
     }
@@ -48,7 +48,7 @@ export const deletePageAction = async (req: Request, res: Response, next: NextFu
     try {
         const { id } = req.params;
         const pageRes = await deletePage(id);
-        res.json({ ...pageRes });
+        return successResponse(res, pageRes, "Page remove successfully", HTTP_STATUS.OK);
     } catch (error) {
         next(error);
     }
