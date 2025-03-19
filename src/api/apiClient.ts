@@ -14,7 +14,17 @@ export const apiClient = async <T>(
     }
 
     const response = await fetch(url, options);
-    if (!response.ok) throw new Error("Network response was not ok");
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const errorMessage = errorData?.error || response.statusText;
+        const errorDetails = errorData?.details || null;
+
+        const err = new Error(errorMessage) as Error & { status?: number; details?: unknown };
+        err.status = response.status;
+        err.details = errorDetails;
+
+        throw err;
+    }
 
     return response.json();
 };

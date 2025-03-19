@@ -62,15 +62,23 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
                 formattedPages[page.id] = page
             })
             setPages(formattedPages)
-        } catch {
-            console.log('error')
+        } catch (error) {
+            const err = error as Error & { status?: number; details?: unknown };
+
+            if (err.status === 401) {
+                // redirect to login
+            } else if (err.status === 400) {
+                // validation error → show form errors
+            } else if (err.status === 500) {
+                // show generic toast
+            }
         } finally {
             setLoading(false)
         }
     }
 
     const getCurrentPage = async (pageId: number) => {
-        if(!pages) return
+        if (!pages) return
         const currentPage = pages[pageId]
         if (!currentPage) {
             const fetchedPage = await fetchPage(pageId)
