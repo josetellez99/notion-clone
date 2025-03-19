@@ -1,9 +1,11 @@
+import { ApiResponse } from "@/types/api";
+
 export const apiClient = async <T>(
     url: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' = "GET",
     headers: Record<string, string> = {},
     body?: object
-): Promise<T> => {
+): Promise<ApiResponse<T>> => {
     const options: RequestInit = {
         method,
         headers: { "Content-Type": "application/json", ...headers },
