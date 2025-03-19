@@ -1,6 +1,7 @@
 import { Page } from "@/types/pages";
 import React, { useState, createContext, ReactNode } from "react";
 import { fetchPages, createPage, fetchPage, updatePageDB } from "@/api/pagesApi";
+import { handleApiError } from "@/utils/helpers/apiErrors";
 
 interface PageContextProps {
     pages: PagesState;
@@ -11,7 +12,6 @@ interface PageContextProps {
     updatePagesData: <K extends keyof Page>(field: K, newValue: Page[K], index: number) => void;
     addPage: (new_page: Partial<Page>) => Promise<Page>;
     deletePage: (id: string) => void;
-    updatePage: (id: string, updatePage: Partial<Page>) => void;
     getPages: (user_id: number) => void;
     getCurrentPage: (page_id: number) => void;
 }
@@ -41,6 +41,54 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         }, 800)
     }
 
+    const getPages = async (userId: number) => {
+
+        setLoading(true)
+        try {
+            const res = await fetchPages(userId)
+            const formattedPages: PagesState = {}
+            res.forEach(page => {
+                formattedPages[page.id] = page
+            })
+            setPages(formattedPages)
+        } catch (e) {
+            const error = handleApiError(e)
+            console.error(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const getCurrentPage = async (pageId: number) => {
+        try {
+            if (pages) {
+                const currentPage = pages[pageId]
+                if (!currentPage) {
+                    setCurrentPage(currentPage)
+                } else {
+                    const res = await fetchPage(pageId)
+                    setCurrentPage(res)
+                }
+            } else {
+                const res = await fetchPage(pageId)
+                setCurrentPage(res)
+            }
+        } catch (e) {
+            const error = handleApiError(e)
+            console.error(error)
+        }
+    }
+
+    const addPage = async (newPage: Partial<Page>) => {
+        try {
+            const res = await createPage(newPage)
+            // success message
+            return res
+        } catch {
+            console.log('error')
+        }
+    }
+
     const updatePagesData = async <K extends keyof Page>(field: K, newValue: Page[K], id: number): Promise<void> => {
 
         const newPages = { ...pages || {} };
@@ -52,61 +100,9 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         syncPageDB(newPage, newPage.id)
     }
 
-    const getPages = async (userId: number) => {
-
-        setLoading(true)
-        try {
-            const res = await fetchPages(userId)
-            const formattedPages: PagesState = {}
-            res.forEach(page => {
-                formattedPages[page.id] = page
-            })
-            setPages(formattedPages)
-        } catch (error) {
-            const err = error as Error & { status?: number; details?: unknown };
-
-            if (err.status === 401) {
-                // redirect to login
-            } else if (err.status === 400) {
-                // validation error → show form errors
-            } else if (err.status === 500) {
-                // show generic toast
-            }
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const getCurrentPage = async (pageId: number) => {
-        if (!pages) return
-        const currentPage = pages[pageId]
-        if (!currentPage) {
-            const fetchedPage = await fetchPage(pageId)
-            setCurrentPage(fetchedPage)
-            return
-        }
-        setCurrentPage(currentPage)
-    }
-
-    const addPage = async (newPage: Partial<Page>) => {
-        try {
-            return await createPage(newPage)
-        } catch {
-            console.log('error')
-        }
-    }
-
     const deletePage = async (pageId: string) => {
         try {
             console.log(pageId)
-        } catch {
-            console.log('error')
-        }
-    }
-
-    const updatePage = async (newPage: Partial<Page>) => {
-        try {
-            console.log(newPage)
         } catch {
             console.log('error')
         }
@@ -124,7 +120,6 @@ export const PagesProvider = ({ children }: PagesProviderProps) => {
         getCurrentPage,
         addPage,
         deletePage,
-        updatePage,
     }
 
     return (
