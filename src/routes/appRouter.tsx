@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { DashboardPage } from '@/components/pages/Dasboard/Dashboard'
 import { ProtectedRoute } from "@/routes/protectedRoute";
-import { AppPage } from "@/components/pages/AppPage";
+import { AppPage } from "@/components/pages/AppPage/AppPage";
 import { SidebarLayout } from "@/components/layout/SidebarLayout/SidebarLayout";
 import { SinglePage } from "@/components/pages/Page/SinglePage";
 
