@@ -1,50 +1,44 @@
-# React + TypeScript + Vite
+# Notion Clone – Learning by Building
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a personal learning project where I'm building a Notion-like application from scratch to deepen my understanding of full-stack development.
 
-Currently, two official plugins are available:
+Notion is a software that I love and has many hard challenges in Frontend and backend so that's why I chose this app to make a clon.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🧠 Goal
 
-## Expanding the ESLint configuration
+The purpose of this project is **learning by doing** — not just building features, but understanding how things work under the hood. I'm using this as a real-world playground to apply best practices in:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Complex state management
+- Clean frontend architecture
+- REST API design
+- React optimization (memoization, useMemo, React.memo)
+- Scalable architecture patterns (backend & frontend)
+- Error handling systems
+- Database structure and query strategies
 
-- Configure the top-level `parserOptions` property like this:
+### ⚙️ Stack
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Frontend**: React, TypeScript, Context API, TailwindCSS
+- **Backend**: Express.js, PostgreSQL
+- **Database**: SQL relational model
+- **Auth**: JWT authentication
+- **Architecture**: Layered structure (Routes → Controllers → Services → Repositories)
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### ✍️ Learning in Progress
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+This project is **under active development**, and I’m constantly improving the architecture and refactoring the code to make it scalable, robust, and clean. Some key ideas I’m exploring:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Optimizing render performance
+- Error handling flow from DB → API → Client
+- Nested pages logic and tree rendering
+- Page editing synced with DB
+- SSR
+- Real time updates
+- Auth sessions
+- Many more
+
+### 🚧 Status
+
+This project is still in progress. Core features like page creation, nesting, editing, and real-time syncing are being built step by step. I'm focusing on building a solid foundation rather than rushing features.
+
+Feel free to explore the code and follow my learning journey! 🙂
