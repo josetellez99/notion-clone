@@ -14,7 +14,7 @@ export const PageListElement = React.memo(({ page, onClick, handleOnChangePageNa
     const [isHover, setIsHover] = useState(false)
 
     const handleHoverChange = (isHover: boolean) => {
-        setIsHover(isHover)
+        // setIsHover(isHover)
     }
 
     return (

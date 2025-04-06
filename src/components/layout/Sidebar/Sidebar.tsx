@@ -6,6 +6,9 @@ import { SidebarSectionHeader } from '@/components/layout/Sidebar/SectionHeader/
 import { PageListElement } from '@/components/layout/Sidebar/PageListElement/PageListElement';
 import { Page } from '@/types/pages';
 import { pagesRenderTree } from '@/utils/helpers/pages';
+import { DragAndDrogProvider } from '@/components/reusables/DragAndDropProvider/DragAndDropProvider';
+import { reorderingArrayForDragDrop } from '@/utils/helpers/arrays'
+import { PagesState } from '@/contexts/PageContext';
 
 export const Sidebar = () => {
 
@@ -17,7 +20,8 @@ export const Sidebar = () => {
     }, [pages])
 
     const handlePageClick = useCallback((e: React.MouseEvent<HTMLDivElement>, id: number) => {
-        e.stopPropagation()
+        console.log(e)
+        // e.stopPropagation()
         navigate(`/page/${id}`)
         const newCurrentPage = pages[id]
         setCurrentPage(newCurrentPage)
@@ -43,6 +47,18 @@ export const Sidebar = () => {
         navigate(`/page/${res.id}`)
     }, [pages])
 
+    const onReorder = (fromIndex: number, toIndex: number) => {
+        const finalArray = reorderingArrayForDragDrop(treePagesRender, fromIndex, toIndex, 1)
+        console.log(finalArray)
+        if (!finalArray) return
+        const formattedPages: PagesState = {}
+        finalArray.forEach(page => {
+            formattedPages[page.id] = page
+        })
+        console.log(formattedPages)
+        setPages(formattedPages)
+    }
+
     return (
         <aside className={styles.sidebar}>
             {loading ? (
@@ -51,30 +67,34 @@ export const Sidebar = () => {
                 <div>
                     <SidebarSectionHeader />
                     <ul>
-                        {treePagesRender.map((page) => (
-                            <li key={page.id} >
-                                <PageListElement
-                                    key={page.id}
-                                    page={page}
-                                    handleOnChangePageName={handleOnChangePageName}
-                                    onClick={handlePageClick}
-                                    onAddingSubPage={handleAddSubPage}
-                                />
-                                {page.children && (
-                                    <ul style={{ marginLeft: '12px' }}>
-                                        {page.children.map(p => (
-                                            <PageListElement
-                                                key={p.id}
-                                                page={p}
-                                                onClick={handlePageClick}
-                                                handleOnChangePageName={handleOnChangePageName}
-                                                onAddingSubPage={handleAddSubPage}
-                                            />
-                                        ))}
-                                    </ul>
-                                )}
-                            </li>
-                        ))}
+                        <DragAndDrogProvider
+                            onReOrder={onReorder}
+                        >
+                            {treePagesRender.map((page) => (
+                                <li key={page.id} >
+                                    <PageListElement
+                                        key={page.id}
+                                        page={page}
+                                        handleOnChangePageName={handleOnChangePageName}
+                                        onClick={handlePageClick}
+                                        onAddingSubPage={handleAddSubPage}
+                                    />
+                                    {/* {page.children && (
+                                        <ul style={{ marginLeft: '12px' }}>
+                                            {page.children.map(p => (
+                                                <PageListElement
+                                                    key={p.id}
+                                                    page={p}
+                                                    onClick={handlePageClick}
+                                                    handleOnChangePageName={handleOnChangePageName}
+                                                    onAddingSubPage={handleAddSubPage}
+                                                />
+                                            ))}
+                                        </ul>
+                                    )} */}
+                                </li>
+                            ))}
+                        </DragAndDrogProvider>
                     </ul>
                 </div>
             )}
